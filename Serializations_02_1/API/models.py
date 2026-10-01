@@ -26,10 +26,9 @@ class Order(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     order_at = models.DateField(auto_now_add=True)
     status = models.CharField(max_length=10,choices=Status.choices,default=Status.PENDING)
-    product = models.ForeignKey(Products,on_delete=models.CASCADE)
 
 class OrderItem(models.Model):
-    order = models.ForeignKey(Order,on_delete=models.CASCADE)
+    order = models.ForeignKey(Order,on_delete=models.CASCADE,related_name="items")
     product = models.ForeignKey(Products,on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
     
