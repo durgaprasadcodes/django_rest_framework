@@ -10,6 +10,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 class ResumeSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
+
     user_id = serializers.PrimaryKeyRelatedField(
         queryset=User.objects.all(), source="user", write_only=True
     )
@@ -27,7 +28,7 @@ class ResumeSerializer(serializers.ModelSerializer):
         ]
 
 
-class OnlyResumeSerializers(serializers.ModelSerializer):
+class ResumeListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Resume
         fields = [
@@ -39,8 +40,8 @@ class OnlyResumeSerializers(serializers.ModelSerializer):
         ]
 
 
-class OnlyUserSerializers(serializers.ModelSerializer):
-    resumes = OnlyResumeSerializers(many=True, read_only=True)
+class UserWithResumesSerializer(serializers.ModelSerializer):
+    resumes = ResumeListSerializer(many=True, read_only=True)
 
     class Meta:
         model = User
