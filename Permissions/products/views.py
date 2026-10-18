@@ -1,8 +1,11 @@
-from django.shortcuts import render
-
+from django.shortcuts import render, get_object_or_404
 from rest_framework.views import APIView
+from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
+from .permissions import IsLoggedIn, IsStaffUser, IsOwner
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
+from .models import Product
+from .serializers import ProductSerializer
 
 
 class PublicAPI(APIView):
@@ -33,3 +36,14 @@ class AdminAPI(APIView):
                 "auth": str(request.auth),
             }
         )
+
+
+class ProductView(APIView):
+    permission_classes = [IsOwner]
+
+    def get(self, request, pk):
+        product = get_object_or_404(Product, pk=pk)
+
+        serializer = ProductSerializer(product)
+        print(request.user)
+        return Response(serializer.data)
