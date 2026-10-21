@@ -6,3 +6,5 @@ Pillow
 django-filter
 django-extensions
 django-silk
+djangorestframework-simplejwt
+djangorestframework-simplejwt[crypto]
